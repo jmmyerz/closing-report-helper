@@ -156,7 +156,7 @@ document.body.onload = () => {
   const selectorStyle = Object.assign(document.createElement('style'), {
     innerHTML: `
       select#area{
-        height: 30px;
+        height: 50px;
         border: none;
         overflow: hidden;
       }
