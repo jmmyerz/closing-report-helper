@@ -26,24 +26,18 @@ function calcDiff(rideId) {
     case Number.isNaN(newValue): // Check for non-number value issues
     case newValue < 0:
       // Red for errors or negative numbers
-      targetNode.style = `
-        background-color: #fca5a5;
-      `;
+      targetNode.style = 'background-color: #fca5a5';
       break;
     case newValue >= 1 && newValue <= 500:
     case newValue >= 10000:
       // Yellow for 1-500 (inclusive) and 10,000+ values
-      targetNode.style = `
-        background-color: #fde047;
-      `;
+      targetNode.style = 'background-color: #fde047';
       break;
     case newValue === 0:
       break; // Leave null or 0 fields alone
     default:
       // Green for everything else
-      targetNode.style = `
-        background-color: #86efac;
-      `;
+      targetNode.style = 'background-color: #86efac';
       break;
   }
   // Update the value displayed, showing an error for non-number values or nothing for 0
@@ -65,9 +59,7 @@ function injectDifferenceFields() {
     let beginCountHeader = null;
     headers.forEach((header) => {
       const found = header.textContent.match(headerRegex);
-      if (found) {
-        beginCountHeader = header;
-      }
+      if (found) { beginCountHeader = header; }
     });
     // Create a new "difference" header element and inject it after beginning count
     const differenceHeader = Object.assign(document.createElement('th'), {
@@ -96,14 +88,10 @@ function injectDifferenceFields() {
         field.addEventListener('input', () => {
           // If timeoutStore already had an input timeout for
           // this ride, clear it and restart the timeout
-          if (timeoutStore[found[1]]) {
-            clearTimeout(timeoutStore[found[1]]);
-          }
+          if (timeoutStore[found[1]]) { clearTimeout(timeoutStore[found[1]]); }
           // Set a timeout for 1 second, giving the user time to
           // finish their input, then calculate the difference
-          timeoutStore[found[1]] = setTimeout(() => {
-            calcDiff(found[1]);
-          }, 1000);
+          timeoutStore[found[1]] = setTimeout(() => { calcDiff(found[1]); }, 1000);
         });
       }
     });
@@ -115,13 +103,9 @@ function runDifferenceObserver() {
   // Get the entry form
   const dataForm = document.querySelector('#dataForm');
   // Create an observer for the form
-  const formObserver = new MutationObserver(() => {
-    injectDifferenceFields();
-  });
+  const formObserver = new MutationObserver(injectDifferenceFields);
   // Observe the form for changes to the child nodes (i.e., when the area has been changed)
-  formObserver.observe(dataForm, {
-    childList: true,
-  });
+  formObserver.observe(dataForm, { childList: true });
 }
 
 // Run all the relevant things after DOM load
@@ -130,9 +114,7 @@ document.body.onload = () => {
   runDifferenceObserver();
 
   // Some style changes to the area selector
-  Object.assign(document.querySelector('select#area'), {
-    multiple: true,
-  });
+  Object.assign(document.querySelector('select#area'), { multiple: true });
   const selectorStyle = Object.assign(document.createElement('style'), {
     innerHTML: `
       select#area{
