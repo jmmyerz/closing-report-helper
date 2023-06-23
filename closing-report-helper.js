@@ -42,7 +42,7 @@ function calcDiff(rideId) {
     case newValue === 0:
       break; // Leave null or 0 fields alone
     default:
-      // Everything else should be green
+      // Everything else should be bootsrap success (green)
       targetNode.style = `
         background-color: rgb(25, 135, 84);
         color: rgb(255, 255, 255);
