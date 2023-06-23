@@ -7,12 +7,35 @@
 // Create a globally-scoped object to store timeouts for each field
 const timeoutStore = {};
 
+// Handle swapping beginning/ending counts when clicking an eligible field
+function clickToSwap(rideId) {
+  const endNode = document.querySelector(`input[name="${rideId}_endcount"]`); // Get the ending count field for the given rideId
+  const beginNode = document.querySelector(`input[name="${rideId}_begcount"]`); // Get the beginning count field for the given rideId
+
+  // Swap the value parameters
+  [endNode.value, beginNode.value] = [beginNode.value, endNode.value];
+
+  // Javascript is stupid, so sync with the DOM
+  endNode.setAttribute('value', endNode.value);
+  beginNode.setAttribute('value', beginNode.value);
+
+  // Fire a change event to update the difference field
+  endNode.dispatchEvent(new Event('change'));
+}
+
+// Create a listener for click events on a difference field
+function createClickToSwapListener(differenceField, rideId) {
+  differenceField.addEventListener('click', () => {
+    clickToSwap(rideId);
+  });
+}
+
 // Function to calculate and update the difference for a given form row, corresponding to a ride
 // Called on updates to the beginning/ending counts and when injecting the difference fields
 function calcDiff(rideId) {
   const targetNode = document.querySelector(`input[name="${rideId}_diff"]`); // Get the difference field for the given rideId
-  const endNode = document.querySelector(`input[name="${rideId}_endcount"]`); // Get the ending count for the given rideId
-  const beginNode = document.querySelector(`input[name="${rideId}_begcount"]`); // Get the beginning count for the given rideId
+  const endNode = document.querySelector(`input[name="${rideId}_endcount"]`); // Get the ending count field for the given rideId
+  const beginNode = document.querySelector(`input[name="${rideId}_begcount"]`); // Get the beginning count field for the given rideId
 
   // Avoid self-inflicted NaN by setting null values to 0 for our calculation
   const endValue = endNode.value != null ? endNode.value : 0;
@@ -21,23 +44,30 @@ function calcDiff(rideId) {
   // I hope you can figure out how subtraction works...
   const newValue = endValue - beginValue;
 
+  // Set color and optionally abort a click listener
+  function setColor(color) {
+    targetNode.title = color === null ? '' : 'Click to swap beginning / end values';
+    targetNode.setAttribute('class', color === null ? null : color);
+  }
+
   // Hilight the difference field with colors to match its value
   switch (true) {
     case Number.isNaN(newValue): // Check for non-number value issues
     case newValue < 0:
       // Red for errors or negative numbers
-      targetNode.style = 'background-color: #fda4af';
+      setColor('red pointer');
       break;
     case newValue >= 1 && newValue <= 500:
     case newValue >= 10000:
       // Yellow for 1-500 (inclusive) and 10,000+ values
-      targetNode.style = 'background-color: #fef08a';
+      setColor('yellow pointer');
       break;
     case newValue === 0:
+      setColor(null);
       break; // Leave null or 0 fields alone
     default:
       // Green for everything else
-      targetNode.style = 'background-color: #a7f3d0';
+      setColor('green pointer');
       break;
   }
   // Update the value displayed, showing an error for non-number values or nothing for 0
@@ -45,6 +75,7 @@ function calcDiff(rideId) {
     targetNode.value = 'Error!';
   } else {
     targetNode.value = newValue === 0 ? null : newValue;
+    targetNode.setAttribute('value', newValue || 0);
   }
 }
 
@@ -80,11 +111,13 @@ function injectDifferenceFields() {
           const differenceField = Object.assign(document.createElement('td'), {
             innerHTML: `<input type="text" name="${found[1]}_diff" value="" size="8" disabled>`,
           });
+
+          createClickToSwapListener(differenceField, found[1]);
           field.parentNode.insertAdjacentElement('afterend', differenceField);
           calcDiff(found[1]);
         }
 
-        // Watch the beginning and ending counts for changes
+        // Watch the beginning and ending counts for input
         field.addEventListener('input', () => {
           // If timeoutStore already had an input timeout for
           // this ride, clear it and restart the timeout
@@ -92,6 +125,11 @@ function injectDifferenceFields() {
           // Set a timeout for 1 second, giving the user time to
           // finish their input, then calculate the difference
           timeoutStore[found[1]] = setTimeout(() => { calcDiff(found[1]); }, 1000);
+        });
+
+        // Watch the beginning and ending counts for change events (includes focusout)
+        field.addEventListener('change', () => {
+          calcDiff(found[1]);
         });
       }
     });
@@ -113,7 +151,7 @@ document.body.onload = () => {
   // Run the difference injector/observer
   runDifferenceObserver();
 
-  // Some style changes to the area selector
+  // Some style changes to the area selector and difference fields
   Object.assign(document.querySelector('select#area'), { multiple: true });
   const selectorStyle = Object.assign(document.createElement('style'), {
     innerHTML: `
@@ -132,6 +170,18 @@ document.body.onload = () => {
         display: inline-block;
         border: solid 1px;
         border-radius: 7px;
+      }
+      input.red {
+        background-color: #fda4af;
+      }
+      input.yellow {
+        background-color: #fef08a;
+      }
+      input.green {
+        background-color: #a7f3d0;
+      }
+      input.pointer {
+        cursor: pointer;
       }
     `,
   });
