@@ -26,18 +26,18 @@ function calcDiff(rideId) {
     case Number.isNaN(newValue): // Check for non-number value issues
     case newValue < 0:
       // Red for errors or negative numbers
-      targetNode.style = 'background-color: #fca5a5';
+      targetNode.style = 'background-color: #fda4af';
       break;
     case newValue >= 1 && newValue <= 500:
     case newValue >= 10000:
       // Yellow for 1-500 (inclusive) and 10,000+ values
-      targetNode.style = 'background-color: #fde047';
+      targetNode.style = 'background-color: #fef08a';
       break;
     case newValue === 0:
       break; // Leave null or 0 fields alone
     default:
       // Green for everything else
-      targetNode.style = 'background-color: #86efac';
+      targetNode.style = 'background-color: #a7f3d0';
       break;
   }
   // Update the value displayed, showing an error for non-number values or nothing for 0
