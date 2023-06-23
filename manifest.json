@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Closing Report Helper",
-  "version": "0.1.6",
-  "version_name": "0.1.6 (230622)",
+  "version": "0.2.1",
+  "version_name": "0.2.1 (230622)",
   "author": "jm@jordanmyers.me",
   "description": "Adds helpful features to the closing report entry",
   "content_scripts": [

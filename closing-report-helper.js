@@ -1,10 +1,10 @@
 /* =============================
  * Rides Closing Report Helper
  * - by Jordan Myers
- * - version 0.1.6 (6/22/2023)
+ * - version 0.2.1 (6/22/2023)
  * ============================= */
 
-// Create a globally-scoped object to store timeouts for each field
+// Create a globally-scoped object to store timeouts for each fieldset
 const timeoutStore = {};
 
 // Handle swapping beginning/ending counts when clicking an eligible field
