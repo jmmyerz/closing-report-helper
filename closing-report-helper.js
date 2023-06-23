@@ -25,27 +25,24 @@ function calcDiff(rideId) {
   switch (true) {
     case Number.isNaN(newValue): // Check for non-number value issues
     case newValue < 0:
-      // Bootstrap danger (red) for errors or negative numbers
+      // Red for errors or negative numbers
       targetNode.style = `
-        background-color: rgb(220, 53, 69);
-        color: rgb(255, 255, 255);
+        background-color: #fca5a5;
       `;
       break;
     case newValue >= 1 && newValue <= 500:
     case newValue >= 10000:
-      // Bootsrap warning (yellow) for 1-500 (inclusive) and 10,000+ values
+      // Yellow for 1-500 (inclusive) and 10,000+ values
       targetNode.style = `
-        background-color: rgb(255, 193, 7);
-        color: rgb(0, 0, 0);
+        background-color: #fde047;
       `;
       break;
     case newValue === 0:
       break; // Leave null or 0 fields alone
     default:
-      // Everything else should be bootsrap success (green)
+      // Green for everything else
       targetNode.style = `
-        background-color: rgb(25, 135, 84);
-        color: rgb(255, 255, 255);
+        background-color: #86efac;
       `;
       break;
   }
