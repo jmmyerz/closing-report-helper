@@ -152,10 +152,10 @@ document.body.onload = () => {
   runDifferenceObserver();
 
   // Some style changes to the area selector and difference fields
-  // Object.assign(document.querySelector('select#area'), { multiple: true });
   const originalAreaSelector = document.querySelector('select#area');
   const originalAreaOptions = document.querySelectorAll('select#area option');
 
+  // Set the button colors for each area
   const areaColor = {
     1: '#bbf7d0',
     2: '#fbcfe8',
@@ -167,17 +167,20 @@ document.body.onload = () => {
     8: '#facc15',
   };
 
+  // Create a wrapper div for the button group and insert it
   const buttonsDiv = Object.assign(document.createElement('div'), {
     id: 'area-buttons',
   });
   originalAreaSelector.insertAdjacentElement('afterend', buttonsDiv);
 
+  // Make the first button a label for the group
   const labelButton = Object.assign(document.createElement('button'), {
     innerHTML: 'Area',
     style: 'background-color: rgba(0, 0, 0, 0.1);',
   });
   buttonsDiv.insertAdjacentElement('beforeend', labelButton);
 
+  // Each area selector gets a button with similar properties
   originalAreaOptions.forEach((area) => {
     const areaButton = Object.assign(document.createElement('button'), {
       id: `area-${area.value}`,
@@ -186,6 +189,8 @@ document.body.onload = () => {
       style: `background-color: ${areaColor[area.value]};`,
     });
 
+    // Add a click listener to spoof the original selector
+    // (utilizing the built-in onchange function)
     areaButton.addEventListener('click', () => {
       document.querySelector(`select#area option[value="${area.value}"]`).selected = true;
       document.querySelectorAll('#area-buttons button').forEach((btn) => {
@@ -197,9 +202,11 @@ document.body.onload = () => {
       });
       originalAreaSelector.dispatchEvent(new Event('change'));
     });
+    // Insert the new button at the end of the div
     buttonsDiv.insertAdjacentElement('beforeend', areaButton);
   });
 
+  // Inject an inline stylesheet
   const selectorStyle = Object.assign(document.createElement('style'), {
     innerHTML: `
       select#area{
