@@ -185,7 +185,7 @@ document.body.onload = () => {
     const areaButton = Object.assign(document.createElement('button'), {
       id: `area-${area.value}`,
       value: area.value,
-      innerHTML: area.innerHTML.match(/Area ([1-8]{1})/i)[1],
+      innerHTML: area.value,
       style: `background-color: ${areaColor[area.value]};`,
     });
 
