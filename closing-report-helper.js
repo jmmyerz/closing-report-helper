@@ -152,24 +152,87 @@ document.body.onload = () => {
   runDifferenceObserver();
 
   // Some style changes to the area selector and difference fields
-  Object.assign(document.querySelector('select#area'), { multiple: true });
+  // Object.assign(document.querySelector('select#area'), { multiple: true });
+  const originalAreaSelector = document.querySelector('select#area');
+  const originalAreaOptions = document.querySelectorAll('select#area option');
+
+  const areaColor = {
+    1: '#bbf7d0',
+    2: '#fbcfe8',
+    3: '#fef08a',
+    4: '#fda4af',
+    5: '#bfdbfe',
+    6: '#ddd6fe',
+    7: '#fed7aa',
+    8: '#facc15',
+  };
+
+  const buttonsDiv = Object.assign(document.createElement('div'), {
+    id: 'area-buttons',
+  });
+  originalAreaSelector.insertAdjacentElement('afterend', buttonsDiv);
+
+  const labelButton = Object.assign(document.createElement('button'), {
+    innerHTML: 'Area',
+    style: 'background-color: rgba(0, 0, 0, 0.1);',
+  });
+  buttonsDiv.insertAdjacentElement('beforeend', labelButton);
+
+  originalAreaOptions.forEach((area) => {
+    const areaButton = Object.assign(document.createElement('button'), {
+      id: `area-${area.value}`,
+      value: area.value,
+      innerHTML: area.innerHTML.match(/Area ([1-8]{1})/i)[1],
+      style: `background-color: ${areaColor[area.value]};`,
+    });
+
+    areaButton.addEventListener('click', () => {
+      document.querySelector(`select#area option[value="${area.value}"]`).selected = true;
+      document.querySelectorAll('#area-buttons button').forEach((btn) => {
+        if (btn.value === areaButton.value) {
+          btn.setAttribute('class', 'active');
+        } else {
+          btn.setAttribute('class', '');
+        }
+      });
+      originalAreaSelector.dispatchEvent(new Event('change'));
+    });
+    buttonsDiv.insertAdjacentElement('beforeend', areaButton);
+  });
+
   const selectorStyle = Object.assign(document.createElement('style'), {
     innerHTML: `
       select#area{
-        height: 50px;
-        border: none;
-        overflow: hidden;
+        display: none;
       }
-      select#area:focus {
-        outline: none;
+      #area-buttons button {
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        min-width: 3em;
+        padding: 10px;
+        float: left;
+        font-weight: bold;
+        color: rgba(0, 0, 0, 0.6);
       }
-      select#area option {
-        padding: 5px;
-        margin-right: 5px;
-        text-align: center;
-        display: inline-block;
-        border: solid 1px;
-        border-radius: 7px;
+      #area-buttons button:not(:last-child) {
+        border-right: none;
+      }
+      #area-buttons button:first-child {
+        border-radius: 8px 0 0 8px;
+      }
+      #area-buttons button:last-child {
+        border-radius: 0 8px 8px 0;
+      }
+      #area-buttons:after {
+        content: "";
+        clear: both;
+        display: table;
+      }
+      #area-buttons button:not(:first-child):hover,
+      #area-buttons button.active {
+        cursor: pointer;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 5px;
       }
       input.red {
         background-color: #fda4af;
