@@ -112,7 +112,10 @@ function injectDifferenceFields() {
             innerHTML: `<input type="text" name="${found[1]}_diff" value="" size="8" disabled>`,
           });
 
-          createClickToSwapListener(differenceField, found[1]);
+          // Select the <input> inside differenceField to use for the event listener
+          const differenceInput = differenceField.querySelector('input');
+
+          createClickToSwapListener(differenceInput, found[1]);
           field.parentNode.insertAdjacentElement('afterend', differenceField);
           calcDiff(found[1]);
         }
