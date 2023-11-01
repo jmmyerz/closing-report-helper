@@ -1,7 +1,7 @@
 /* =============================
  * Rides Closing Report Helper
  * - by Jordan Myers
- * - version 0.2.2 (6/23/2023)
+ * - version 1.0.0 (Nov 1 2023)
  * ============================= */
 
 // Create a globally-scoped object to store timeouts for each fieldset
@@ -101,7 +101,7 @@ function injectDifferenceFields() {
 
     const textFields = table.querySelectorAll('td > input[type=text]'); // Get all text input fields
     textFields.forEach((field) => {
-      const beginEndRegex = /([0-9]+)_(begcount|endcount)/i; // Matches rideId and both beginning count and ending count fields
+      const beginEndRegex = /([0-9]+_?[0-9]+)_(begcount|endcount)/i; // Matches rideId and both beginning count and ending count fields
       const found = field.name.match(beginEndRegex);
       if (found) {
         // If this is a beginning count field, inject a new (disabled) field
@@ -178,6 +178,7 @@ document.body.onload = () => {
     innerHTML: 'Area',
     style: 'background-color: rgba(0, 0, 0, 0.1);',
   });
+  labelButton.setAttribute('class', 'no-pointer');
   buttonsDiv.insertAdjacentElement('beforeend', labelButton);
 
   // Each area selector gets a button with similar properties
@@ -188,6 +189,7 @@ document.body.onload = () => {
       innerHTML: area.value,
       style: `background-color: ${areaColor[area.value]};`,
     });
+    areaButton.setAttribute('class', area.selected ? 'active' : ''); // Make the default selection active on load
 
     // Add a click listener to spoof the original selector
     // (utilizing the built-in onchange function)
@@ -219,6 +221,9 @@ document.body.onload = () => {
         float: left;
         font-weight: bold;
         color: rgba(0, 0, 0, 0.6);
+      }
+      #area-buttons button.no-pointer {
+        cursor: default; 
       }
       #area-buttons button:not(:last-child) {
         border-right: none;
