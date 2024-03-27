@@ -13,7 +13,6 @@
       "matches": [
         "http://server02/intranet/closingentry.jsp",
         "http://server02/intranet/com.lagoonpark.ClosingReport*",
-        "http://10.1.1.13/intranet/closingentry.jsp",
         "https://dev.jordanmyers.me/closingreptest.html"
       ]
     }
