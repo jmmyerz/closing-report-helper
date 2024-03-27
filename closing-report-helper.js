@@ -21,6 +21,7 @@ function clickToSwap(rideId) {
 
   // Fire a change event to update the difference field
   endNode.dispatchEvent(new Event('change'));
+  console.log('Swap Success!');
 }
 
 // Create a listener for click events on a difference field
@@ -137,6 +138,7 @@ function injectDifferenceFields() {
       }
     });
   }
+  console.log('Difference Field Injected');
 }
 
 // To be called on DOM load
@@ -168,6 +170,8 @@ document.body.onload = () => {
     6: '#ddd6fe',
     7: '#fed7aa',
     8: '#facc15',
+    9: '#51e077',
+    10: '#f55b9b'
   };
 
   // Create a wrapper div for the button group and insert it
@@ -233,6 +237,7 @@ document.body.onload = () => {
       }
       #area-buttons button:first-child {
         border-radius: 8px 0 0 8px;
+        cursor: default;
       }
       #area-buttons button:last-child {
         border-radius: 0 8px 8px 0;
@@ -263,5 +268,7 @@ document.body.onload = () => {
       }
     `,
   });
+  console.log('Buttons Initialized');
   document.querySelector('head').appendChild(selectorStyle);
+  console.log("Load Success!");
 };
