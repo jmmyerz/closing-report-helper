@@ -166,10 +166,10 @@ document.body.onload = () => {
     2: '#fbcfe8',
     3: '#fef08a',
     4: '#fda4af',
-    5: '#bfdbfe',
-    6: '#ddd6fe',
-    7: '#fed7aa',
-    8: '#facc15',
+    5: '#fed7aa',
+    6: '#facc15',
+    7: '#bfdbfe',
+    8: '#ddd6fe',
     9: '#51e077',
     10: '#f55b9b'
   };
