@@ -171,7 +171,7 @@ document.body.onload = () => {
     7: '#bfdbfe',
     8: '#ddd6fe',
     9: '#51e077',
-    10: '#f55b9b'
+    10: '#f55b9b',
   };
 
   // Create a wrapper div for the button group and insert it
@@ -270,5 +270,5 @@ document.body.onload = () => {
   });
   console.log('Buttons Initialized');
   document.querySelector('head').appendChild(selectorStyle);
-  console.log("Load Success!");
+  console.log('Load Success!');
 };
