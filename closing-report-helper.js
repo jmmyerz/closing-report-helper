@@ -34,7 +34,8 @@ function createClickToSwapListener(differenceField, rideId) {
 // Function to calculate and update the difference for a given form row, corresponding to a ride
 // Called on updates to the beginning/ending counts and when injecting the difference fields
 function calcDiff(rideId) {
-  const targetNode = document.querySelector(`input[name="${rideId}_diff"]`); // Get the difference field for the given rideId
+  //const targetNode = document.querySelector(`input[name="${rideId}_diff"]`); // Get the difference field for the given rideId
+  const targetNode = document.querySelector(`input[name="${rideId}_sum"]`); // Get the difference field for the given rideId
   const endNode = document.querySelector(`input[name="${rideId}_endcount"]`); // Get the ending count field for the given rideId
   const beginNode = document.querySelector(`input[name="${rideId}_begcount"]`); // Get the beginning count field for the given rideId
 
@@ -75,8 +76,8 @@ function calcDiff(rideId) {
   if (Number.isNaN(newValue)) {
     targetNode.value = 'Error!';
   } else {
-    targetNode.value = newValue === 0 ? null : newValue;
-    targetNode.setAttribute('value', newValue || 0);
+    // targetNode.value = newValue === 0 ? null : newValue;
+    // targetNode.setAttribute('value', newValue || 0);
   }
 }
 
@@ -94,11 +95,11 @@ function injectDifferenceFields() {
       if (found) { beginCountHeader = header; }
     });
     // Create a new "difference" header element and inject it after beginning count
-    const differenceHeader = Object.assign(document.createElement('th'), {
-      scope: 'col',
-      textContent: 'Difference',
-    });
-    beginCountHeader.insertAdjacentElement('afterend', differenceHeader);
+    // const differenceHeader = Object.assign(document.createElement('th'), {
+    //   scope: 'col',
+    //   textContent: 'Difference',
+    // });
+    // beginCountHeader.insertAdjacentElement('afterend', differenceHeader);
 
     const textFields = table.querySelectorAll('td > input[type=text]'); // Get all text input fields
     textFields.forEach((field) => {
@@ -109,15 +110,21 @@ function injectDifferenceFields() {
         // after it to store the difference. Call calcDiff to calculate the
         // difference in case there's already data present in the form
         if (found[2] === 'begcount') {
-          const differenceField = Object.assign(document.createElement('td'), {
-            innerHTML: `<input type="text" name="${found[1]}_diff" value="" size="8" disabled>`,
-          });
+          // const differenceField = Object.assign(document.createElement('td'), {
+          //   innerHTML: `<input type="text" name="${found[1]}_diff" value="" size="8" disabled>`,
+          // });
+          const differenceRegex = /([0-9]+_?[0-9]+)_sum/i;
+          const differenceField = field.name.match(differenceRegex);
 
           // Select the <input> inside differenceField to use for the event listener
-          const differenceInput = differenceField.querySelector('input');
+          const differenceInput = document.getElementById(found[1] + '_sum')
+          // Add a "disabled" prop to the input field
+          differenceInput.setAttribute('disabled', '');
+          // Add size="8" to the input field
+          differenceInput.setAttribute('size', '8');
 
           createClickToSwapListener(differenceInput, found[1]);
-          field.parentNode.insertAdjacentElement('afterend', differenceField);
+          // field.parentNode.insertAdjacentElement('afterend', differenceField);
           calcDiff(found[1]);
         }
 
