@@ -275,7 +275,86 @@ document.body.onload = () => {
       }
     `,
   });
+
+  const dataTableStyle = Object.assign(document.createElement('style'), {
+    innerHTML: `
+      table {
+        border-collapse: separate;
+      }
+
+      #mytable th {
+        font: bold 11px "Trebucet MS", Veranda, Arial, Helvetica, sans-serif;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 6px 6px 6px 6px;
+        background: none;
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+
+      #mytable th.nobg {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+        background: none;
+        background-color: rgba(0, 0, 0, 0.1);
+        border-top-left-radius: 8px;
+      }
+
+      #mytable th.spec {
+        border-top: 1px solid rgba(0, 0, 0, 0.3);
+        border-left: 1px solid rgba(0, 0, 0, 0.3);
+        border-right: 1px solid rgba(0, 0, 0, 0.3);
+        background: none;
+        border-collapse: collapse;
+        border-radius: 0px;
+      }
+
+      #mytable th.specalt {
+        border-left: 1px solid rgba(0, 0, 0, 0.3);
+        border-right: 1px solid rgba(0, 0, 0, 0.3);
+        background: none;
+        border-collapse: collapse;
+      }
+
+      #mytable th:first-child {
+        border-top-left-radius: none;
+        border-collapse: collapse;
+      }
+
+      #mytable th:last-child {
+        border-top-right-radius: 8px;
+      }
+
+      #mytable td {
+        border-right: 1px solid rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+        background: none;
+        padding: 6px 6px 6px 6px;
+      }
+
+      #mytable td.alt {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      #mytable td:last-child th:first-child {
+        border-bottom-left-radius: 8px;
+      }
+
+      #mytable td:last-child th:last-child {
+        border-bottom-right-radius: 8px;
+      }
+
+
+
+      #mytable:after {
+        content: "";
+        clear: both;
+        display: table;
+      }
+    `
+  })
   console.log('Buttons Initialized');
   document.querySelector('head').appendChild(selectorStyle);
+  document.querySelector('head').appendChild(dataTableStyle);
   console.log('Load Success!');
 };
