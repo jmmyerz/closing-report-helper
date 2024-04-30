@@ -275,7 +275,7 @@ document.body.onload = () => {
       }
     `,
   });
-
+  // Hijack the present data form and get rid of the horrible formatting by injecting an inline stylesheet
   const dataTableStyle = Object.assign(document.createElement('style'), {
     innerHTML: `
       table {
@@ -283,21 +283,27 @@ document.body.onload = () => {
       }
 
       #mytable th {
-        font: bold 11px "Trebucet MS", Veranda, Arial, Helvetica, sans-serif;
-        border: 1px solid rgba(0, 0, 0, 0.3);
-        letter-spacing: 2px;
-        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: bold;
+        border-right: 1px solid rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+        border-top: 1px solid rgba(0, 0, 0, 0.3);
+        letter-spacing: 1px;
+        text-transform: none;
         text-align: center;
-        padding: 6px 6px 6px 6px;
+        padding: 4px;
         background: none;
         background-color: rgba(0, 0, 0, 0.3);
+        border-collapse: collapse;
+        color: rgb(0, 0, 0);
       }
 
       #mytable th.nobg {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+        border-right: 1px solid rgba(0, 0, 0, 0.3);
         background: none;
         background-color: rgba(0, 0, 0, 0.1);
         border-top-left-radius: 8px;
+        border-collapse: separate;
       }
 
       #mytable th.spec {
@@ -307,6 +313,7 @@ document.body.onload = () => {
         background: none;
         border-collapse: collapse;
         border-radius: 0px;
+        font-size: 16px;
       }
 
       #mytable th.specalt {
@@ -314,15 +321,13 @@ document.body.onload = () => {
         border-right: 1px solid rgba(0, 0, 0, 0.3);
         background: none;
         border-collapse: collapse;
-      }
-
-      #mytable th:first-child {
-        border-top-left-radius: none;
-        border-collapse: collapse;
+        color: rgba(0, 0, 0, 0.7);
+        font-size: 16px;
       }
 
       #mytable th:last-child {
         border-top-right-radius: 8px;
+        border-collapse: separate;
       }
 
       #mytable td {
@@ -344,17 +349,46 @@ document.body.onload = () => {
         border-bottom-right-radius: 8px;
       }
 
-
-
       #mytable:after {
         content: "";
         clear: both;
         display: table;
       }
     `
-  })
-  console.log('Buttons Initialized');
+  });
+
+  // Change the formatting of the submit button to be more user friendly, once again by injecting an inline stylesheet
+  const submitButtonStyle = Object.assign(document.createElement('style'), {
+    innerHTML: `
+      input[type=submit] {
+        float: center; 
+        margin-top: 10px;
+        margin-left: 20vw;
+        min-height: 7vh;
+        min-width: 25vw;
+        border-radius: 8px;
+        font-weight: bold;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 2px solid rgba(0, 0, 0, 0.3);
+        color: rgba(0, 0, 0, 0.6);
+      }
+    `
+  });
+
+  // Change the margin of the date selector and data table so things are spaced out
+  const bigMargin = Object.assign(document.createElement('style'), {
+    innerHTML: `
+      #datepicker {
+        margin-bottom: 30px;
+      }
+    `
+  });
   document.querySelector('head').appendChild(selectorStyle);
+  console.log('Buttons Loaded');
   document.querySelector('head').appendChild(dataTableStyle);
+  console.log('Custom Table Loaded')
+  document.querySelector('head').appendChild(submitButtonStyle);
+  console.log('Custom Submit Button Loaded')
+  document.querySelector('head').appendChild(bigMargin);
   console.log('Load Success!');
 };
