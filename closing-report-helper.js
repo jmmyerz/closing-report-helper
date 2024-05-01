@@ -178,6 +178,29 @@ function injectDifferenceFields() {
   console.log('Difference Field Injected');
 }
 
+// Function to disable downtime and comment fields for the second Rattlesnake Rapids and Wicked turnstiles
+function disableUnnecessaryFields () {
+  // Get the data table
+  const table = document.querySelector('table#mytable');
+  if (table) {
+    // Get all td text entry elements
+    const textFields = table.querySelectorAll('td > input[type=text]');
+    textFields.forEach((field) => {
+      // Iterate through all text fields and match the rideID and appropriate field
+      const idFieldRegex = /(([1]+|(?:123)+)_?[2]+)_(mdminutes|edminutes|odminutes|comments)/i;
+      // Store the found value
+      const found = field.name.match(idFieldRegex);
+      if (found) {
+        // Get the <input> element for the field to be disabled
+        const inputToDisableNode = document.getElementsByName(found[0]);
+        // Disable the field 
+        inputToDisableNode[0].setAttribute('disabled', '');
+      }
+    });
+  }
+
+}
+
 function setAreaColors() {
   // Set the current area color to a more readable variable
   let currentAreaColor = areaColor[area.value];
@@ -203,6 +226,16 @@ function setAreaColors() {
       data.style.setProperty('--custom-color-light', currentAreaColorLight);
     }
   });
+}
+
+// Use an observer to update the disabled fields every time the form changes
+function runDisableField() {
+  // Get the entry form
+  const dataForm = document.querySelector('#dataForm');
+  // Create an observer for the form
+  const formObserver = new MutationObserver(disableUnnecessaryFields);
+  // Observe the form for changes to the child nodes (i.e., when the area has been changed)
+  formObserver.observe(dataForm, { childList: true });
 }
 
 // Use an observer to make sure the colors don't load before the other page information
@@ -231,6 +264,7 @@ document.body.onload = () => {
   // Run the difference injector/observer
   runDifferenceObserver();
   runAreaColors();
+  runDisableField();
 
   // Some style changes to the area selector and difference fields
   const originalAreaSelector = document.querySelector('select#area');
@@ -277,6 +311,7 @@ document.body.onload = () => {
     buttonsDiv.insertAdjacentElement('beforeend', areaButton);
   });
 
+  // Sets the default value for the header background color to grey
   window.CSS.registerProperty({
     name: "--custom-color",
     syntax: "<color>",
@@ -284,13 +319,14 @@ document.body.onload = () => {
     initialValue: 'rgba(0, 0, 0, 0.2)',
   });
 
+  // Sets the default background color for alt table data elements to grey
   window.CSS.registerProperty({
     name: "--custom-color-light",
     syntax: "<color>",
     inherits: false,
     initialValue: 'rgba(0, 0, 0, 0.05',
   });
-  
+ 
   // Inject an inline stylesheet
   const selectorStyle = Object.assign(document.createElement('style'), {
     innerHTML: `
@@ -425,10 +461,9 @@ document.body.onload = () => {
     innerHTML: `
       input[type=submit] {
         color: rgba(0, 0, 0, 0.6);
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba(0, 0, 0, 0.2);
         border: 2px solid rgba(0, 0, 0, 0.3);
-        border-radius: 8px;
-        float: center; 
+        border-radius: 8px; 
         font-weight: bold;
         margin-left: 20vw;
         margin-top: 10px;
